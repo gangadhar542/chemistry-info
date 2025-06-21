@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChemLibX - Chemical Engineering Digital Library</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--secondary);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+        
+        /* Login Button */
+        .login-btn {
+            background: var(--secondary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin-left: 1rem;
+            transition: background 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: #2980b9;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            max-width: 600px;
+        }
+        
+        .hero-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+        }
+        
+        /* Search Section */
+        .search-section {
+            background: white;
+            padding: 2rem;
+            margin-top: -50px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .search-container {
+            display: flex;
+        }
+        
+        .search-container input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+        
+        .search-container button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .search-container button:hover {
+            background: #2980b9;
+        }
+        
+        /* Books Section */
+        .section-title {
+            text-align: center;
+            margin: 3rem 0 2rem;
+            color: var(--primary);
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-title p {
+            color: #777;
+        }
+        
+        .books-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .book-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .book-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .book-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .book-card:hover .book-img img {
+            transform: scale(1.05);
+        }
+        
+        .book-info {
+            padding: 1.5rem;
+        }
+        
+        .book-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .book-info .author {
+            color: #777;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .book-info .year {
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .book-info .btn {
+            display: block;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: modalopen 0.4s;
+        }
+        
+        @keyframes modalopen {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .close:hover {
+            color: var(--accent);
+        }
+        
+        .login-form h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+        
+        .login-form button {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .login-form button:hover {
+            background: #2980b9;
+        }
+        
+        .login-form .form-footer {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        /* Categories Section */
+        .categories {
+            background: var(--light);
+            padding: 3rem 0;
+        }
+        
+        .categories-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .category-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-card i {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .category-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .category-card p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--secondary);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: #ddd;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: background 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--secondary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 0.5rem;
+            }
+            
+            .hero-content {
+                text-align: center;
+                padding: 0 20px;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .search-container input {
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+            
+            .search-container button {
+                border-radius: 5px;
+                padding: 0.8rem;
+            }
+            
+            .modal-content {
+                margin: 20% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-flask"></i>
+                <h1>ChemEngineer's</span> Hub</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#books">Books</a></li>
+                    <li><a href="#categories">Categories</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#" id="openLogin" class="login-btn">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form class="login-form">
+                <h2>Member Login</h2>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit">Login</button>
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="#">Register here</a></p>
+                    <p><a href="#">Forgot password?</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <h2>Chemical Engineering Digital Library</h2>
+            <p>Access the most comprehensive collection of chemical engineering resources, books, and research materials all in one place.</p>
+            <a href="#books" class="btn">Explore Books</a>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="container search-section">
+        <div class="search-container">
+            <input type="text" placeholder="Search for books, articles, or resources...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </section>
+
+    <!-- Featured Books Section -->
+    <section class="container" id="books">
+        <div class="section-title">
+            <h2>Featured Books</h2>
+            <p>Explore our collection of essential chemical engineering books</p>
+        </div>
+        
+        <div class="books-container" id="books-container">
+            <!-- Books will be loaded from JavaScript -->
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories" id="categories">
+        <div class="container">
+            <div class="section-title">
+                <h2>Browse Categories</h2>
+                <p>Find resources by specific chemical engineering disciplines</p>
+            </div>
+            
+            <div class="categories-container">
+                <div class="category-card">
+                    <i class="fas fa-atom"></i>
+                    <h3>Thermodynamics</h3>
+                    <p>Principles of energy and entropy in chemical systems</p>
+                </div>
+                
+                <div class="category-card">
+                    <i class="fas fa-vial"></i>
+                    <h3>Reaction Engineering</h3>
+                    <p>Chemical reactors and kinetics</p>
+                </div>
+                
+                <div class="category-card">
+                    <i class="fas fa-tint"></i>
+                    <h3>Fluid Mechanics</h3>
+                    <p>Flow of liquids and gases</p>
+                </div>
+                
+                <div class="category-card">
+                    <i class="fas fa-fire"></i>
+                    <h3>Heat Transfer</h3>
+                    <p>Conduction, convection and radiation</p>
+                </div>
+                
+                <div class="category-card">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Process Control</h3>
+                    <p>Automation and optimization</p>
+                </div>
+                
+                <div class="category-card">
+                    <i class="fas fa-recycle"></i>
+                    <h3>Separation Processes</h3>
+                    <p>Distillation, extraction and more</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About ChemLibX</h3>
+                    <p>The premier digital library for chemical engineering students, researchers, and professionals worldwide.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#books">Books</a></li>
+                        <li><a href="#categories">Categories</a></li>
+                        <li><a href="#">Journals</a></li>
+                        <li><a href="#">Research Papers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Study Guides</a></li>
+                        <li><a href="#">Lecture Notes</a></li>
+                        <li><a href="#">Solved Problems</a></li>
+                        <li><a href="#">Software Tools</a></li>
+                        <li><a href="#">Career Resources</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> info@chemlibx.edu</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Engineering Blvd, Boston, MA</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 ChemLibX Digital Library. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Chemical Engineering Books Data
+        const books = [
+            {
+                title: "Perry's Chemical Engineers' Handbook",
+                author: "Don W. Green, Marylee Z. Southard",
+                year: "2019",
+                category: "Reference",
+                image: "https://m.media-amazon.com/images/I/91XQYx4Xm5L._AC_UF1000,1000_QL80_.jpg",
+                description: "The definitive reference for chemical engineering professionals covering all aspects of chemical engineering."
+            },
+            {
+                title: "Elementary Principles of Chemical Processes",
+                author: "Richard M. Felder, Ronald W. Rousseau",
+                year: "2020",
+                category: "Fundamentals",
+                image: "https://m.media-amazon.com/images/I/81V+9hG4mZL._AC_UF1000,1000_QL80_.jpg",
+                description: "Introduces the basic principles and calculation techniques used in the field of chemical engineering."
+            },
+            {
+                title: "Chemical Reaction Engineering",
+                author: "Octave Levenspiel",
+                year: "1998",
+                category: "Reaction Engineering",
+                image: "https://m.media-amazon.com/images/I/71O3zPZbJTL._AC_UF1000,1000_QL80_.jpg",
+                description: "Classic text on chemical reactor analysis and design with numerous examples and problems."
+            },
+            {
+                title: "Transport Phenomena",
+                author: "R. Byron Bird, Warren E. Stewart, Edwin N. Lightfoot",
+                year: "2007",
+                category: "Transport Phenomena",
+                image: "https://m.media-amazon.com/images/I/81J0XY4GJQL._AC_UF1000,1000_QL80_.jpg",
+                description: "The standard text on momentum, heat, and mass transfer in chemical engineering applications."
+            },
+            {
+                title: "Separation Process Principles",
+                author: "J. D. Seader, Ernest J. Henley, D. Keith Roper",
+                year: "2016",
+                category: "Separation Processes",
+                image: "https://m.media-amazon.com/images/I/81V9Y1XJ0DL._AC_UF1000,1000_QL80_.jpg",
+                description: "Comprehensive coverage of separation processes and their applications in chemical engineering."
+            },
+            {
+                title: "Process Dynamics and Control",
+                author: "Dale E. Seborg, Thomas F. Edgar, Duncan A. Mellichamp",
+                year: "2016",
+                category: "Process Control",
+                image: "https://m.media-amazon.com/images/I/81z9F4+3JEL._AC_UF1000,1000_QL80_.jpg",
+                description: "Covers the theory and application of process control in chemical engineering systems."
+            },
+            {
+                title: "Introduction to Chemical Engineering Thermodynamics",
+                author: "J.M. Smith, Hendrick Van Ness, Michael Abbott",
+                year: "2018",
+                category: "Thermodynamics",
+                image: "https://m.media-amazon.com/images/I/81Y1XJ0DL._AC_UF1000,1000_QL80_.jpg",
+                description: "Classic introduction to chemical engineering thermodynamics with modern applications."
+            },
+            {
+                title: "Unit Operations of Chemical Engineering",
+                author: "Warren L. McCabe, Julian C. Smith, Peter Harriott",
+                year: "2005",
+                category: "Unit Operations",
+                image: "https://m.media-amazon.com/images/I/71O3zPZbJTL._AC_UF1000,1000_QL80_.jpg",
+                description: "Definitive guide to the unit operations approach to chemical engineering design."
+            }
+        ];
+
+        // Display books on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const booksContainer = document.getElementById('books-container');
+            
+            books.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                bookCard.innerHTML = `
+                    <div class="book-img">
+                        <img src="${book.image}" alt="${book.title}">
+                    </div>
+                    <div class="book-info">
+                        <h3>${book.title}</h3>
+                        <p class="author">${book.author}</p>
+                        <span class="year">${book.year}</span>
+                        <a href="#" class="btn">View Details</a>
+                    </div>
+                `;
+                booksContainer.appendChild(bookCard);
+            });
+        });
+
+        // Login Modal functionality
+        const modal = document.getElementById('loginModal');
+        const btn = document.getElementById('openLogin');
+        const span = document.getElementsByClassName('close')[0];
+
+        btn.onclick = function() {
+            modal.style.display = 'block';
+        }
+
+        span.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Form submission
+        const loginForm = document.querySelector('.login-form');
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if(username && password) {
+                alert('Login successful!');
+                modal.style.display = 'none';
+                loginForm.reset();
+            } else {
+                alert('Please fill in all fields');
+            }
+        });
+    </script>
+</body>
+</html>
